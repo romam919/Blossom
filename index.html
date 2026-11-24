@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💕 Just For Carrie 💕</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #ffe6f0 0%, #fff0f5 50%, #ffe6e6 100%);
+            font-family: 'Georgia', serif;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .title {
+            font-size: 2.5rem;
+            color: #e75480;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            animation: fadeInDown 1s ease-out;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #d63384;
+            margin-bottom: 30px;
+            animation: fadeInUp 1s ease-out 0.5s both;
+            text-align: center;
+        }
+
+        .bouquet-container {
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            animation: floatIn 1s ease-out;
+        }
+
+        .bouquet-container:hover {
+            transform: scale(1.05);
+        }
+
+        .bouquet-container:active {
+            transform: scale(0.98);
+        }
+
+        .bouquet {
+            max-width: 90vw;
+            max-height: 60vh;
+            filter: drop-shadow(0 10px 30px rgba(0,0,0,0.2));
+            transition: filter 0.3s ease;
+        }
+
+        .bouquet:hover {
+            filter: drop-shadow(0 15px 40px rgba(231, 84, 128, 0.4));
+        }
+
+        .click-hint {
+            margin-top: 20px;
+            font-size: 1rem;
+            color: #e75480;
+            animation: pulse 2s infinite;
+        }
+
+        /* Floating hearts container */
+        .hearts-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        /* Heart particle */
+        .heart {
+            position: absolute;
+            font-size: 20px;
+            animation: floatUp 3s ease-out forwards;
+            pointer-events: none;
+        }
+
+        /* Sparkle effect */
+        .sparkle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: radial-gradient(circle, #fff 0%, #ffb6c1 50%, transparent 70%);
+            border-radius: 50%;
+            animation: sparkleAnim 1s ease-out forwards;
+            pointer-events: none;
+        }
+
+        /* Love message popup */
+        .love-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: linear-gradient(135deg, #fff 0%, #ffe6f0 100%);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(231, 84, 128, 0.3);
+            z-index: 100;
+            text-align: center;
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .love-message.show {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+        }
+
+        .love-message h2 {
+            color: #e75480;
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+
+        .love-message p {
+            color: #d63384;
+            font-size: 1.2rem;
+            line-height: 1.6;
+        }
+
+        .love-message .close-btn {
+            margin-top: 20px;
+            padding: 10px 30px;
+            background: linear-gradient(135deg, #e75480 0%, #d63384 100%);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            pointer-events: auto;
+        }
+
+        .love-message .close-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(231, 84, 128, 0.4);
+        }
+
+        /* Background floating hearts */
+        .bg-heart {
+            position: fixed;
+            font-size: 20px;
+            opacity: 0.3;
+            animation: bgFloat 15s infinite linear;
+            pointer-events: none;
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes floatIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8) translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        @keyframes floatUp {
+            0% {
+                opacity: 1;
+                transform: translateY(0) rotate(0deg) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-400px) rotate(720deg) scale(0);
+            }
+        }
+
+        @keyframes sparkleAnim {
+            0% {
+                opacity: 1;
+                transform: scale(0);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.5);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(0);
+            }
+        }
+
+        @keyframes bgFloat {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+            }
+        }
+
+        /* Glow effect on click */
+        .glow {
+            animation: glowPulse 0.5s ease-out;
+        }
+
+        @keyframes glowPulse {
+            0% {
+                filter: drop-shadow(0 0 0 rgba(231, 84, 128, 0));
+            }
+            50% {
+                filter: drop-shadow(0 0 30px rgba(231, 84, 128, 0.8));
+            }
+            100% {
+                filter: drop-shadow(0 10px 30px rgba(0,0,0,0.2));
+            }
+        }
+
+        /* Secret button - hidden in plain sight */
+        .secret-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            font-size: 12px;
+            opacity: 0.3;
+            cursor: default;
+            transition: all 0.3s ease;
+            user-select: none;
+            z-index: 5;
+        }
+
+        .secret-button:hover {
+            opacity: 0.5;
+            transform: scale(1.2);
+        }
+
+        .secret-button:active {
+            transform: scale(0.9);
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .title {
+                font-size: 1.8rem;
+            }
+            .subtitle {
+                font-size: 1rem;
+            }
+            .bouquet {
+                max-width: 95vw;
+                max-height: 50vh;
+            }
+            .love-message {
+                padding: 25px;
+                width: 90%;
+            }
+            .love-message h2 {
+                font-size: 1.5rem;
+            }
+            .love-message p {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hearts-container" id="heartsContainer"></div>
+    
+    <h1 class="title">💕 Some Beautiful Flowers for Someone Beautiful 💕</h1>
+    <p class="subtitle">A special bouquet, from Mr. Romantic</p>
+    
+    <div class="bouquet-container" id="bouquetContainer">
+        <img src="bouquet.png" alt="A beautiful bouquet for you" class="bouquet" id="bouquet">
+    </div>
+    
+    <p class="click-hint">💝 Tap here 💝</p>
+
+    <!-- Secret button disguised as a small heart decoration -->
+    <div class="secret-button" id="secretButton" title="💕">💕</div>
+
+    <div class="love-message" id="loveMessage">
+        <h2>to Carrie</h2>
+        <p>Sometimes, the simplest things can bring the biggest smiles.
+
+Although we haven't known each other for long, I'm genuinely glad our paths crossed. You deserve beautiful things, and I hope these flowers bring a little happiness to your day. Consider this a small reminder that someone thinks you're pretty special.
+<br>I'm really glad to know you!<br>> This bouquet 🌹 is for you <</p>
+        <button class="close-btn" onclick="closeMessage()">💕 With love, Mr. Romantic 💕</button>
+    </div>
+
+    <script>
+        const bouquetContainer = document.getElementById('bouquetContainer');
+        const bouquet = document.getElementById('bouquet');
+        const heartsContainer = document.getElementById('heartsContainer');
+        const loveMessage = document.getElementById('loveMessage');
+        const secretButton = document.getElementById('secretButton');
+        
+        const heartEmojis = ['❤️', '💕', '💖', '💗', '💝', '💘', '🌹', '✨', '💐', '🥀'];
+
+        // Create background floating hearts
+        function createBackgroundHearts() {
+            for (let i = 0; i < 15; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.className = 'bg-heart';
+                    heart.textContent = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+                    heart.style.left = Math.random() * 100 + 'vw';
+                    heart.style.animationDuration = (10 + Math.random() * 10) + 's';
+                    heart.style.animationDelay = Math.random() * 5 + 's';
+                    heart.style.fontSize = (15 + Math.random() * 20) + 'px';
+                    document.body.appendChild(heart);
+                }, i * 300);
+            }
+        }
+
+        // Create floating heart on click
+        function createHeart(x, y) {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.textContent = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+            heart.style.left = x + 'px';
+            heart.style.top = y + 'px';
+            heart.style.fontSize = (20 + Math.random() * 30) + 'px';
+            heartsContainer.appendChild(heart);
+            
+            setTimeout(() => heart.remove(), 3000);
+        }
+
+        // Create sparkle effect
+        function createSparkle(x, y) {
+            const sparkle = document.createElement('div');
+            sparkle.className = 'sparkle';
+            sparkle.style.left = (x - 5) + 'px';
+            sparkle.style.top = (y - 5) + 'px';
+            heartsContainer.appendChild(sparkle);
+            
+            setTimeout(() => sparkle.remove(), 1000);
+        }
+
+        // Handle bouquet click/touch
+        function handleInteraction(e) {
+            e.preventDefault();
+            
+            // Get coordinates
+            let x, y;
+            if (e.type === 'touchstart') {
+                x = e.touches[0].clientX;
+                y = e.touches[0].clientY;
+            } else {
+                x = e.clientX;
+                y = e.clientY;
+            }
+
+            // Add glow effect
+            bouquet.classList.remove('glow');
+            void bouquet.offsetWidth; // Trigger reflow
+            bouquet.classList.add('glow');
+
+            // Create multiple hearts
+            for (let i = 0; i < 8; i++) {
+                setTimeout(() => {
+                    const offsetX = x + (Math.random() - 0.5) * 100;
+                    const offsetY = y + (Math.random() - 0.5) * 100;
+                    createHeart(offsetX, offsetY);
+                }, i * 50);
+            }
+
+            // Create sparkles
+            for (let i = 0; i < 12; i++) {
+                setTimeout(() => {
+                    const offsetX = x + (Math.random() - 0.5) * 150;
+                    const offsetY = y + (Math.random() - 0.5) * 150;
+                    createSparkle(offsetX, offsetY);
+                }, i * 30);
+            }
+        }
+
+        // Secret button click handler
+        function handleSecretClick(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            // Create some hearts from the button
+            const rect = secretButton.getBoundingClientRect();
+            const x = rect.left + rect.width / 2;
+            const y = rect.top + rect.height / 2;
+            
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    createHeart(x + (Math.random() - 0.5) * 50, y + (Math.random() - 0.5) * 50);
+                }, i * 50);
+            }
+            
+            // Show the love message
+            setTimeout(() => {
+                loveMessage.classList.add('show');
+            }, 300);
+        }
+
+        // Close message popup
+        function closeMessage() {
+            loveMessage.classList.remove('show');
+        }
+
+        // Event listeners
+        bouquetContainer.addEventListener('click', handleInteraction);
+        bouquetContainer.addEventListener('touchstart', handleInteraction);
+        
+        // Secret button event listeners
+        secretButton.addEventListener('click', handleSecretClick);
+        secretButton.addEventListener('touchstart', handleSecretClick);
+
+        // Close message when clicking outside
+        loveMessage.addEventListener('click', (e) => {
+            if (e.target === loveMessage) {
+                closeMessage();
+            }
+        });
+
+        // Initialize background hearts
+        createBackgroundHearts();
+
+        // Add some magic on page load
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const rect = bouquet.getBoundingClientRect();
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 2;
+                
+                for (let i = 0; i < 5; i++) {
+                    setTimeout(() => {
+                        createSparkle(
+                            centerX + (Math.random() - 0.5) * 200,
+                            centerY + (Math.random() - 0.5) * 200
+                        );
+                    }, i * 100);
+                }
+            }, 1500);
+        });
+    </script>
+</body>
+</html>
